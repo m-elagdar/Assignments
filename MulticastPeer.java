@@ -19,7 +19,6 @@ public class MulticastPeer {
         while(true) {
             try {
                 message = nickname + ": " + System.console().readLine();
-//                System.out.print(message);
                 if(message.equals(nickname + ": " + "close")) { switchGroup(); continue; }
                 byte[] m = message.getBytes();
                 DatagramPacket messageOut = new DatagramPacket(m, m.length, group, port);
@@ -152,8 +151,6 @@ class Receiver implements Runnable {
                 DatagramPacket messageIn = new DatagramPacket(buffer, buffer.length);
                 s.receive(messageIn);
                 String msgIn = new String(messageIn.getData()).trim();
-//                System.out.println(msgIn.length());
-//                System.out.println(MulticastPeer.message.charAt(9));
                 if(msgIn.equals(MulticastPeer.message.trim())) { msgIn="<sent>"; MulticastPeer.message=""; }
                 System.out.println(msgIn);
             } catch(IOException e) {
