@@ -89,7 +89,7 @@ public class MulticastPeer {
                     break;
                 } catch (IOException e) {
                     portChanged=true;
-                    System.out.println("port " + port + " is busy, trying port " + ++port);
+                    System.out.println("Can't connect to port " + port + ", trying " + ++port);
                     //e.printStackTrace();
                 }
             } while(true);
@@ -145,19 +145,19 @@ class Receiver implements Runnable {
 
     @Override
     public void run() {
-        while (true) { // get messages from others in group
-            try {
-                byte[] buffer = new byte[1000];
-                DatagramPacket messageIn = new DatagramPacket(buffer, buffer.length);
-                s.receive(messageIn);
-                String msgIn = new String(messageIn.getData()).trim();
-                if(msgIn.equals(MulticastPeer.message.trim())) { msgIn="<sent>"; MulticastPeer.message=""; }
-                System.out.println(msgIn);
-            } catch(IOException e) {
-                System.out.println("Connection error");
-                try { Thread.sleep(1000); }
-                catch (InterruptedException e1) { }
-            }
-        }
+        while (true) { // Keep receiving messages from others in group
+			try {
+				byte[] buffer = new byte[1000];
+				DatagramPacket messageIn = new DatagramPacket(buffer, buffer.length);
+				s.receive(messageIn);
+				String msgIn = new String(messageIn.getData()).trim();
+				if(msgIn.equals(MulticastPeer.message.trim())) { msgIn="<sent>"; MulticastPeer.message=""; }
+				System.out.println(msgIn);
+			} catch(IOException e) {
+				System.out.println("Connection error");
+				try { Thread.sleep(1000); }
+				catch (InterruptedException e1) { }
+			}
+		}
     }
 }
